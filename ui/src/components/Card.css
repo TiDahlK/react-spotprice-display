@@ -1,0 +1,29 @@
+.card__container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid gray;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #ffffff;
+}
+
+.card__section {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  gap: 12px;
+  h3 {
+    margin: 0;
+    display: flex;
+    gap: 8px;
+  }
+  svg {
+    align-self: anchor-center;
+  }
+}
+.card-price__section {
+  display: flex;
+  gap: 8px;
+}
