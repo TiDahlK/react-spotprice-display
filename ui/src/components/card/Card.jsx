@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./Card.css";
+import EnergyChart from "../chart/EnergyChart";
 
-function Card({ priceArea, high, low, average }) {
+function Card({ priceArea, high, low, average, energyMix }) {
   return (
     <>
       <div>
@@ -20,6 +21,7 @@ function Card({ priceArea, high, low, average }) {
               <FontAwesomeIcon icon="fa-solid fa-circle-arrow-down" />
               Lägst - {low.price} {low.timespan}
             </h3>
+            <EnergyChart energyMix={energyMix}></EnergyChart>
           </div>
         </div>
       </div>

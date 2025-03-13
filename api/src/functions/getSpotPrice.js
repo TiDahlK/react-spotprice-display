@@ -443,7 +443,7 @@ app.http("getSpotPrice", {
     );
 
     const result = transformData(data);
-    console.log(result);
+
     return { jsonBody: result };
   },
 });
