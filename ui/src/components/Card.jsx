@@ -14,11 +14,11 @@ function Card({ priceArea, high, low, average }) {
           <div className="card__section">
             <h3>
               <FontAwesomeIcon icon="fa-solid fa-circle-arrow-up fa-align-center" />
-              Högst - {high.price} - {high.timespan}
+              Högst - {high.price} {high.timespan}
             </h3>
             <h3>
               <FontAwesomeIcon icon="fa-solid fa-circle-arrow-down" />
-              Lägst - {low.price} - {low.timespan}
+              Lägst - {low.price} {low.timespan}
             </h3>
           </div>
         </div>
