@@ -15,7 +15,7 @@ export const LegendItem = ({ color, label }) => {
           r="8"
           fill={color}
           stroke="#8c8c8c"
-          stroke-width="1"
+          strokeWidth="1"
         />
       </svg>
       <span>{label}</span>
