@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Card from "./components/card/Card";
 import { getFromSessionStorage } from "./utils";
@@ -12,9 +12,14 @@ function App() {
     getFromSessionStorage("energyMix", null)
   );
   const [selectedCard, setSelectedCard] = useState(null);
+  const [error, setError] = useState(null);
+
+  const isDataFetched = useRef({
+    spotPricesFetched: false,
+    energyMixFetched: false,
+  });
 
   const handleSelectCard = (card) => {
-    console.log(selectedCard, card);
     if (selectedCard === card) {
       setSelectedCard(null);
       return;
@@ -22,12 +27,11 @@ function App() {
 
     setSelectedCard(card);
   };
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSpotPrice = async () => {
-      if (spotPrices) {
-        return;
+      if (spotPrices || isDataFetched.current.spotPricesFetched) {
+        return; // Avoid fetching if already fetched or sessionStorage has it
       }
 
       try {
@@ -36,6 +40,7 @@ function App() {
         );
         setSpotPrices(data);
         window.sessionStorage.setItem("spotPrices", JSON.stringify(data));
+        isDataFetched.current.spotPricesFetched = true; // Mark as fetched
       } catch (err) {
         console.log(err);
         setError("Kunde inte hämta spotpriser :(");
@@ -43,27 +48,29 @@ function App() {
     };
 
     fetchSpotPrice();
-  }, []);
+  }, [spotPrices]); // Add spotPrices as dependency to check if it was fetched
 
   useEffect(() => {
     const fetchEnergyMix = async () => {
-      if (energyMix) {
-        return;
+      if (energyMix || isDataFetched.current.energyMixFetched) {
+        return; // Avoid fetching if already fetched or sessionStorage has it
       }
+
       try {
         const { data } = await axios.get(
           "http://localhost:7071/api/getEnergyMix"
         );
         setEnergyMix(data);
         window.sessionStorage.setItem("energyMix", JSON.stringify(data));
+        isDataFetched.current.energyMixFetched = true; // Mark as fetched
       } catch (err) {
         console.log(err);
-        setError("Kunde inte hämta spotpriser :(");
+        setError("Kunde inte hämta energimix :(");
       }
     };
 
     fetchEnergyMix();
-  }, []);
+  }, [energyMix]); // Add energyMix as dependency to check if it was fetched
 
   if (error) return <h1>{error}</h1>;
   if (!spotPrices || !energyMix) return <h1>Laddar in dagens spotpriser...</h1>;
