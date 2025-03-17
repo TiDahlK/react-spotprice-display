@@ -12,14 +12,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 body {
+  min-height: 100vh;
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  background-color: #2e2e2e;
-  min-height: 100vh;
 }
 
 h1 {
