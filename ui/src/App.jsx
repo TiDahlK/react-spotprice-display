@@ -48,19 +48,19 @@ function App() {
         window.sessionStorage.setItem("energyMix", JSON.stringify(data));
       } catch (err) {
         console.log(err);
-        setError("Failed to fetch spot prices");
+        setError("Kunde inte hämta spotpriser :(");
       }
     };
 
     fetchEnergyMix();
   }, []);
 
-  if (!spotPrices || !energyMix) return <h1>Laddar in dagens spotpriser...</h1>;
   if (error) return <h1>{error}</h1>;
+  if (!spotPrices || !energyMix) return <h1>Laddar in dagens spotpriser...</h1>;
 
   return (
     <>
-      <h1>Dagens elpris</h1>
+      <h1>Dagens spotpriser</h1>
       <div className="container">
         {Object.entries(spotPrices).map(([area, spotPriceInfo]) => {
           const props = {
