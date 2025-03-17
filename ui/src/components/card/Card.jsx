@@ -36,6 +36,7 @@ function Card({
               {
                 id: "hours",
                 dataKey: "time",
+                max: 23,
                 valueFormatter: (time) =>
                   `${time.toString().padStart(2, "0")}:00`,
               },
@@ -56,7 +57,7 @@ function Card({
 
   function defaultCard() {
     return (
-      <div className="card__container" onClick={handleClick}>
+      <button className="card__container" onClick={handleClick}>
         <h2>
           <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" />{" "}
           {priceArea} - {average.price}
@@ -75,7 +76,7 @@ function Card({
             <EnergyChart energyMix={energyMix}></EnergyChart>
           </div>
         </div>
-      </div>
+      </button>
     );
   }
 
