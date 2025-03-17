@@ -16,7 +16,7 @@ function transformData(data) {
     const timeSeries = data.multiAreaEntries.map((entry) => {
       const price = entry.entryPerArea[area] || 0;
       const deliveryStart = new Date(entry.deliveryStart);
-      const hour = deliveryStart.getHours().toString().padStart(2, "0");
+      const hour = deliveryStart.getHours();
 
       // Track high/low price details
       if (price > highestPrice) {
@@ -30,8 +30,8 @@ function transformData(data) {
       }
 
       return {
-        time: `${hour}:00`,
-        value: (price / 10).toFixed(2), // Convert to öre/kWh
+        time: hour,
+        value: Math.round(price * 10) / 100, // Convert to öre/kWh
       };
     });
     const areaAverage = data.areaAverages.find(
