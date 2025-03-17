@@ -10,10 +10,23 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: #4a4a4a;
   color: white;
-  transition: all 0.4s;
+  transition: transform 0.4s;
+}
+.card__container-expanded {
+  position: fixed;
+  z-index: 9999;
+  height: 80%;
+  max-width: 90%;
+  width: 90%;
+  top: 10%;
+  transition: max-width 0.4s;
 }
 .card__container:hover {
   transform: scale(1.05);
+  cursor: pointer;
+}
+.card__container-expanded:hover {
+  transform: none;
   cursor: pointer;
 }
 

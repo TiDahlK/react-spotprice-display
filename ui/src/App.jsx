@@ -11,7 +11,17 @@ function App() {
   const [energyMix, setEnergyMix] = useState(() =>
     getFromSessionStorage("energyMix", null)
   );
+  const [selectedCard, setSelectedCard] = useState(null);
 
+  const handleSelectCard = (card) => {
+    console.log(selectedCard, card);
+    if (selectedCard === card) {
+      setSelectedCard(null);
+      return;
+    }
+
+    setSelectedCard(card);
+  };
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -66,8 +76,15 @@ function App() {
           const props = {
             ...spotPriceInfo,
             energyMix: energyMix.areas[area],
+            isSelected: area === selectedCard,
           };
-          return <Card key={area} {...props}></Card>;
+          return (
+            <Card
+              key={area}
+              {...props}
+              onClickCallback={handleSelectCard}
+            ></Card>
+          );
         })}
       </div>
     </>
