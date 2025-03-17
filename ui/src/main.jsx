@@ -9,11 +9,9 @@ import {
   faCircleArrowUp,
   faCircleArrowDown,
   faClock,
-  faRadiation,
-  faWind,
-  faWater,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faBolt, faCircleArrowUp, faCircleArrowDown, faClock);
+library.add(faBolt, faCircleArrowUp, faCircleArrowDown, faClock, faX);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
