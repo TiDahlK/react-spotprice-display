@@ -9,6 +9,9 @@ import {
   faCircleArrowUp,
   faCircleArrowDown,
   faClock,
+  faRadiation,
+  faWind,
+  faWater,
 } from "@fortawesome/free-solid-svg-icons";
 library.add(faBolt, faCircleArrowUp, faCircleArrowDown, faClock);
 
