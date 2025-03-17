@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LineChart } from "@mui/x-charts/LineChart"; // Import LineChart from MUI X Charts
 
 import "./Card.css";
 import EnergyChart from "../chart/EnergyChart";
 
 function Card({
   priceArea,
+  timeSeries,
   high,
   low,
   average,
@@ -18,15 +20,36 @@ function Card({
 
   function expandedCard() {
     return (
-      <div
-        className="card__container card__container-expanded"
-        onClick={handleClick}
-      >
+      <div className="card__container card__container-expanded">
+        <button className="close-button" onClick={handleClick}>
+          <FontAwesomeIcon icon="fa-solid fa-x fa-align-center" size="lg" />
+        </button>
         <h2>
           <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" />{" "}
           {priceArea} - {average.price}
         </h2>
-        <div className="card__section"></div>
+        <div className="chart-container">
+          <LineChart
+            dataset={[...timeSeries]}
+            grid={{ vertical: true, horizontal: true }}
+            xAxis={[
+              {
+                id: "hours",
+                dataKey: "time",
+                valueFormatter: (time) =>
+                  `${time.toString().padStart(2, "0")}:00`,
+              },
+            ]}
+            series={[
+              {
+                dataKey: "value",
+                valueFormatter: (value) => `${value} öre/kWh`,
+                area: true,
+                color: "#3D6653",
+              },
+            ]}
+          />
+        </div>
       </div>
     );
   }
