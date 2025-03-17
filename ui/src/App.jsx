@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Card from "./components/Card";
+import Card from "./components/card/Card";
 import { getFromSessionStorage } from "./utils";
 import "./App.css";
 
@@ -37,6 +37,9 @@ function App() {
 
   useEffect(() => {
     const fetchEnergyMix = async () => {
+      if (energyMix) {
+        return;
+      }
       try {
         const { data } = await axios.get(
           "http://localhost:7071/api/getEnergyMix"
@@ -44,6 +47,7 @@ function App() {
         setEnergyMix(data);
         window.sessionStorage.setItem("energyMix", JSON.stringify(data));
       } catch (err) {
+        console.log(err);
         setError("Failed to fetch spot prices");
       }
     };
@@ -59,7 +63,10 @@ function App() {
       <h1>Dagens elpris</h1>
       <div className="container">
         {Object.entries(spotPrices).map(([area, spotPriceInfo]) => {
-          const props = { ...spotPriceInfo, energyMix: energyMix[area] };
+          const props = {
+            ...spotPriceInfo,
+            energyMix: energyMix.areas[area],
+          };
           return <Card key={area} {...props}></Card>;
         })}
       </div>
