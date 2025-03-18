@@ -1,6 +1,6 @@
 import { PieChart } from "@mui/x-charts/PieChart";
 import "./EnergyChart.css";
-import { LegendItem } from "./LegendItem";
+import { LegendItem } from "../legend_item/LegendItem";
 export default function EnergyChart({ energyMix }) {
   return (
     <div style={{ width: "100%", height: "100%" }}>

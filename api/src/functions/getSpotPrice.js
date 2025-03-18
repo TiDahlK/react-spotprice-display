@@ -13,28 +13,27 @@ function transformData(data) {
     let highTime = "";
     let lowTime = "";
 
-    data.multiAreaEntries.forEach((entry) => {
-      const price = entry.entryPerArea[area];
-
+    const timeSeries = data.multiAreaEntries.map((entry) => {
+      const price = entry.entryPerArea[area] || 0;
       const deliveryStart = new Date(entry.deliveryStart);
-      const hour = deliveryStart.getHours().toString().padStart(2, "0");
-      const nextHour =
-        hour === "23"
-          ? "00"
-          : (deliveryStart.getHours() + 1).toString().padStart(2, "0");
-      const timeSpan = `Klocka ${hour}:00-${nextHour}:00`;
+      const hour = deliveryStart.getHours();
 
+      // Track high/low price details
       if (price > highestPrice) {
         highestPrice = price;
-        highTime = timeSpan;
+        highTime = `Klocka ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
       }
 
       if (price < lowestPrice) {
         lowestPrice = price;
-        lowTime = timeSpan;
+        lowTime = `Klocka ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
       }
-    });
 
+      return {
+        time: hour,
+        value: Math.round(price * 10) / 100, // Convert to öre/kWh
+      };
+    });
     const areaAverage = data.areaAverages.find(
       (a) => a.areaCode === area
     )?.price;
@@ -52,6 +51,7 @@ function transformData(data) {
       average: {
         price: `${(areaAverage / 10).toFixed(2)} öre/kWh`,
       },
+      timeSeries,
     };
 
     return result;
@@ -84,8 +84,10 @@ app.http("getSpotPrice", {
 
     const data = await fetchDayAheadPrices({ date, ...STATIC_PARAMS });
 
-    const result = transformData(data);
+    const summary = transformData(data);
 
-    return { jsonBody: result };
+    return {
+      jsonBody: summary,
+    };
   },
 });
