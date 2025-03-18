@@ -14,11 +14,15 @@ function Card({
   isSelected,
   onClickCallback,
 }) {
+  const title = `${priceArea} - ${average.price}`;
+
   function handleClick() {
     onClickCallback(priceArea);
   }
 
   function expandedCard() {
+    document.title = title;
+
     return (
       <div className="card__container card__container-expanded">
         <button className="close-button" onClick={handleClick}>
@@ -41,8 +45,7 @@ function Card({
     return (
       <button className="card__container" onClick={handleClick}>
         <h2>
-          <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" />{" "}
-          {priceArea} - {average.price}
+          <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" /> {title}
         </h2>
         <div className="card__section">
           <h3>
