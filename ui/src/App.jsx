@@ -22,6 +22,7 @@ function App() {
   const handleSelectCard = (card) => {
     if (selectedCard === card) {
       setSelectedCard(null);
+      document.title = "Dagens Spotpris";
       return;
     }
 
