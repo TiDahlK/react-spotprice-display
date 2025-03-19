@@ -24,14 +24,19 @@
 .card__container:hover {
   transform: scale(1.05);
   cursor: pointer;
+  outline: solid;
+  box-shadow: 10px 10px 20px 0px rgba(255, 255, 255, 0.53);
 }
 .card__container-expanded:hover {
   transform: none;
   cursor: auto;
+  outline: none;
+  box-shadow: none;
 }
 .card__container:focus {
   transform: scale(1.05);
   outline: solid;
+  box-shadow: 10px 10px 20px 0px rgba(255, 255, 255, 0.53);
 }
 
 .card__section {
