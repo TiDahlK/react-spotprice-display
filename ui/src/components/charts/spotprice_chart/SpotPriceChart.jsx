@@ -52,6 +52,7 @@ export default function SpotPriceChart({ timeSeries }) {
         series={[
           {
             dataKey: "value",
+            curve: "step",
             valueFormatter: (value) => `${value} öre/kWh`,
             area: true,
             color: "#739E82",
