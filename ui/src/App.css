@@ -2,7 +2,13 @@
   margin: 0 auto;
   text-align: center;
   display: flex;
+  gap: 48px;
   flex-direction: column;
+  padding: 24px;
+  max-width: 1280px;
+  @media (min-width: 768px) {
+    padding: 92px;
+  }
 }
 
 .container {
@@ -24,10 +30,9 @@
   align-self: center;
 }
 
-.neon-text:hover {
-  color: #fff;
-  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
-    0 0 42px rgba(255, 255, 255, 0.53), 0 0 82px rgba(255, 255, 255, 0.53),
-    0 0 92px rgba(255, 255, 255, 0.53), 0 0 102px rgba(255, 255, 255, 0.53),
-    0 0 151px rgba(255, 255, 255, 0.53);
+.additional-info_container {
+  height: 100%;
+  min-height: 480px;
+  text-align: start;
+  margin: auto;
 }

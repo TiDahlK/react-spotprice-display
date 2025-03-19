@@ -3,6 +3,7 @@ import axios from "axios";
 import Card from "./components/card/Card";
 import { getFromSessionStorage } from "./utils";
 import "./App.css";
+import SpotPriceChart from "./components/charts/spotprice_chart/SpotPriceChart";
 
 function App() {
   const [spotPrices, setSpotPrices] = useState(() =>
@@ -19,14 +20,11 @@ function App() {
     energyMixFetched: false,
   });
 
-  const handleSelectCard = (card) => {
-    if (selectedCard === card) {
-      setSelectedCard(null);
-      document.title = "Dagens Spotpris";
-      return;
-    }
+  const selectedArea = useRef(null);
 
+  const handleSelectCard = (card) => {
     setSelectedCard(card);
+    selectedArea.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -96,6 +94,24 @@ function App() {
           );
         })}
       </div>
+      {selectedCard && (
+        <div className="additional-info_container" ref={selectedArea}>
+          <h2>Dagens Spotpris i {selectedCard}</h2>
+
+          <SpotPriceChart
+            timeSeries={spotPrices[selectedCard].timeSeries}
+          ></SpotPriceChart>
+
+          <h3>Vad påverkar spotpriserna i {selectedCard} idag?</h3>
+          <p className="info-text">
+            På grund av hög export och låg produktion från förnybara källor, som
+            vanligtvis pressar ner priserna, är elpriserna idag högre än normalt
+            i SE4. Vindkraftsproduktionen är låg, samtidigt som exporten till
+            kontinenten är hög, vilket skapar ett underskott och driver upp
+            priset
+          </p>
+        </div>
+      )}
     </>
   );
 }
