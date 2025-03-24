@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Card from "./components/card/Card";
+import { useState, useEffect, useRef } from "react";
 import { getFromSessionStorage } from "./utils";
+import { API_HOST } from "./constants";
 import "./App.css";
 import SpotPriceChart from "./components/charts/spotprice_chart/SpotPriceChart";
 
@@ -30,16 +31,16 @@ function App() {
   useEffect(() => {
     const fetchSpotPrice = async () => {
       if (spotPrices || isDataFetched.current.spotPricesFetched) {
-        return; // Avoid fetching if already fetched or sessionStorage has it
+        return;
       }
 
       try {
         const { data } = await axios.get(
-          "http://localhost:7071/api/getSpotPrice"
+          `${API_HOST}/api/getSpotPrice`
         );
         setSpotPrices(data);
         window.sessionStorage.setItem("spotPrices", JSON.stringify(data));
-        isDataFetched.current.spotPricesFetched = true; // Mark as fetched
+        isDataFetched.current.spotPricesFetched = true;
       } catch (err) {
         console.log(err);
         setError("Kunde inte hämta spotpriser :(");
@@ -47,7 +48,7 @@ function App() {
     };
 
     fetchSpotPrice();
-  }, [spotPrices]); // Add spotPrices as dependency to check if it was fetched
+  }, [spotPrices]);
 
   useEffect(() => {
     const fetchEnergyMix = async () => {
@@ -57,7 +58,7 @@ function App() {
 
       try {
         const { data } = await axios.get(
-          "http://localhost:7071/api/getEnergyMix"
+          `${API_HOST}/api/getEnergyMix`
         );
         setEnergyMix(data);
         window.sessionStorage.setItem("energyMix", JSON.stringify(data));
