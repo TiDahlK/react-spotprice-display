@@ -13,12 +13,17 @@ function App() {
   const [energyMix, setEnergyMix] = useState(() =>
     getFromSessionStorage("energyMix", null)
   );
+  const [exchangeData, setExchangeData] = useState(() =>
+    getFromSessionStorage("exchangeData", null)
+  );
+
   const [selectedCard, setSelectedCard] = useState(null);
   const [error, setError] = useState(null);
 
   const isDataFetched = useRef({
     spotPricesFetched: false,
     energyMixFetched: false,
+    exchangeDataFetched: false
   });
 
   const selectedArea = useRef(null);
@@ -70,7 +75,28 @@ function App() {
     };
 
     fetchEnergyMix();
-  }, [energyMix]); // Add energyMix as dependency to check if it was fetched
+  }, [energyMix]);
+
+  useEffect(() => {
+    const fetchExchangeData = async () => {
+      if (exchangeData || isDataFetched.current.exchangeDataFetched) {
+        return; 
+      }
+
+      try {
+        const { data } = await axios.get(
+          `${API_HOST}/api/getImportExport`
+        );
+        setExchangeData(data);
+        window.sessionStorage.setItem("exchangeData", JSON.stringify(data));
+        isDataFetched.current.exchangeData = true;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchExchangeData();
+  }, [exchangeData]);
 
   if (error) return <h1>{error}</h1>;
   if (!spotPrices || !energyMix)
