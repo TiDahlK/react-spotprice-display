@@ -27,10 +27,12 @@ function Card({ priceArea, high, low, average, energyMix, onClickCallback }) {
             <FontAwesomeIcon icon="fa-solid fa-circle-arrow-down" />
             Lägst: {low.price} {low.timespan}
           </h3>
-          <div>
-            <h3>Energimix</h3>
-            <EnergyChart energyMix={energyMix}></EnergyChart>
-          </div>
+          {energyMix && (
+            <div>
+              <h3>Energimix</h3>
+              <EnergyChart energyMix={energyMix}></EnergyChart>
+            </div>
+          )}
         </div>
       </button>
     </>
