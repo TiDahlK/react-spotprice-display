@@ -21,19 +21,13 @@ function App() {
 
   useEffect(() => {
     getSpotPrices(setError);
-  }, [spotPrices]);
-
-  useEffect(() => {
     getEnergyMix();
-  }, [energyMix]);
-  
-  useEffect(() => {
     getExchangeData();
-  }, [exchangeData]);
+  }, []);
 
-  if (error){
+  if (error) {
     return <h1>{error}</h1>;
-  } 
+  }
 
   if (!spotPrices) {
     return <h1 className="neon-text">Laddar in dagens spotpriser...</h1>;
