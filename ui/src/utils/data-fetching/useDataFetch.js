@@ -1,4 +1,3 @@
-import { API_HOST } from "../../constants";
 import axios from "axios";
 import { useState } from "react";
 import { getFromSessionStorage } from "../index";
@@ -14,7 +13,7 @@ export const useDataFetch = (sessionStorageKey, endpoint, onFailure) => {
     }
 
     try {
-      const { data } = await axios.get(`${API_HOST}/api/${endpoint}`);
+      const { data } = await axios.get(`/api/${endpoint}`);
       window.sessionStorage.setItem(sessionStorageKey, JSON.stringify(data));
       setApiData(data);
     } catch(error) {
