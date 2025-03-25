@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setBlob } from "../helpers/blob.js";
+import { setBlob } from "../../api-utils/blob.js";
 
 const STATIC_PARAMS = {
   market: "DayAhead",
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
   }
   try {
     const date = new Date().toISOString().split("T")[0];
-    const blobName = `spotprice_${date}_cron`;
+    const blobName = `spotprice_${date}`;
 
     const data = await fetchDayAheadPrices({ date, ...STATIC_PARAMS });
     const summary = transformData(data);
