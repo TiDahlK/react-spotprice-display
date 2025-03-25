@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const PRICE_AREAS = ["SE1", "SE2", "SE3", "SE4"];
 

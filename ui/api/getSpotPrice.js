@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 const STATIC_PARAMS = {
   market: "DayAhead",
   deliveryAreas: ["SE1", "SE2", "SE3", "SE4"],

@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 const COLOR_LIST = [
   "#99621E",
   "#D38B5D",
