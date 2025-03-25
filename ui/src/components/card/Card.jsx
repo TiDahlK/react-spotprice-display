@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EnergyChart from "../charts/energy_chart/EnergyChart";
-import SpotPriceChart from "../charts/spotprice_chart/SpotPriceChart";
 
 import "./Card.css";
 

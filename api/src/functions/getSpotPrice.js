@@ -18,7 +18,6 @@ function transformData(data) {
       const deliveryStart = new Date(entry.deliveryStart);
       const hour = deliveryStart.getHours();
 
-      // Track high/low price details
       if (price > highestPrice) {
         highestPrice = price;
         highTime = `Klocka ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
@@ -31,7 +30,7 @@ function transformData(data) {
 
       return {
         time: hour,
-        value: Math.round(price * 10) / 100, // Convert to öre/kWh
+        value: Math.round(price * 10) / 100,
       };
     });
     const areaAverage = data.areaAverages.find(

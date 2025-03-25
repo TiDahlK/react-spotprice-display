@@ -1,4 +1,4 @@
-import { LineChart } from "@mui/x-charts/LineChart"; // Import LineChart from MUI X Charts
+import { LineChart } from "@mui/x-charts/LineChart";
 import "./SpotPriceChart.css";
 
 export default function SpotPriceChart({ timeSeries }) {

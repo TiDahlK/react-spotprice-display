@@ -22,6 +22,7 @@ const COLOR_LIST = [
   "#99B3A6",
   "#5B7F6B",
 ];
+
 function calculateProductionPercentage(data, colorMap) {
   const result = data.content.reduce(
     (productionByType, entry) => {
@@ -84,10 +85,9 @@ function calculateProductionPercentage(data, colorMap) {
 const fetchProductionData = async () => {
   const baseURL = "https://dataportal-api.nordpoolgroup.com/api/ProductionData";
   const deliveryAreas = ["SE1", "SE2", "SE3", "SE4"];
-  const today = new Date().toISOString().split("T")[0]; // Get today's date (YYYY-MM-DD)
+  const today = new Date().toISOString().split("T")[0];
 
   try {
-    // Create an array of promises for each delivery area
     const requests = deliveryAreas.map((area) =>
       axios.get(baseURL, {
         params: {
@@ -98,7 +98,6 @@ const fetchProductionData = async () => {
       })
     );
 
-    // Wait for all requests to complete
     const responses = await Promise.all(requests);
 
     return responses.reduce(
