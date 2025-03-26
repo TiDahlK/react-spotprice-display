@@ -17,7 +17,7 @@ function constructPromt(spotPrices, exchangeData, energyMix, priceArea) {
 
           Skapa en detaljerad analys för elområde ${priceArea}, analysen är cirka 100 ord lång. Diskutera faktorer som påverkat priset i elområdet, inklusive produktionsmix, överföringskapacitet och import/export.  
 
-          Svaret ska vara på svenska och formulerat på ett naturligt sätt.
+          Svaret ska vara på svenska och formulerat på ett naturligt sätt. Referera aldrig till variabelnamnen ['SPOT_PRICES', 'IMPORT_EXPORT' och 'ENERGY_PRODUCTION_MIX'] i svaret.
 
           DATA
           SPOT_PRICES: ${JSON.stringify(spotPrices[priceArea])}
