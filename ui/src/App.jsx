@@ -1,6 +1,7 @@
 import Card from "./components/card/Card";
 import { useState, useEffect, useRef } from "react";
 import SpotPriceChart from "./components/charts/spotprice_chart/SpotPriceChart";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   useSpotPrice,
   useEnergyMix,
@@ -71,6 +72,7 @@ function App() {
           <p className="info-text">{analysis[selectedCard]}</p>
         </div>
       )}
+      <SpeedInsights />
     </>
   );
 }
