@@ -1,1 +1,1 @@
-export { SPOT_PRICE, ENERGY_MIX, EXCHANGE_DATA } from "./apiSettings";
+export { SPOT_PRICE, ENERGY_MIX, EXCHANGE_DATA, ANALYSIS } from "./apiSettings";

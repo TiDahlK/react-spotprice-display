@@ -10,3 +10,7 @@ export const EXCHANGE_DATA = {
   SESSION_STORAGE_KEY: "exchangeData",
   ENDPOINT: "getImportExport",
 };
+export const ANALYSIS = {
+  SESSION_STORAGE_KEY: "analysis",
+  ENDPOINT: "getAnalysis",
+};

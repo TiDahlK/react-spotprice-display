@@ -1,13 +1,19 @@
 import Card from "./components/card/Card";
 import { useState, useEffect, useRef } from "react";
 import SpotPriceChart from "./components/charts/spotprice_chart/SpotPriceChart";
-import { useSpotPrice, useEnergyMix, useExchangeData } from "./utils/index";
+import {
+  useSpotPrice,
+  useEnergyMix,
+  useExchangeData,
+  useAnalysis,
+} from "./utils/index";
 import "./App.css";
 
 function App() {
   const [spotPrices, getSpotPrices] = useSpotPrice();
   const [energyMix, getEnergyMix] = useEnergyMix();
   const [exchangeData, getExchangeData] = useExchangeData();
+  const [analysis, getAnalysis] = useAnalysis();
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [error, setError] = useState(null);
@@ -23,6 +29,7 @@ function App() {
     getSpotPrices(setError);
     getEnergyMix();
     getExchangeData();
+    getAnalysis();
   }, []);
 
   if (error) {
@@ -61,13 +68,7 @@ function App() {
           ></SpotPriceChart>
 
           <h3>Vad påverkar spotpriserna i {selectedCard} idag?</h3>
-          <p className="info-text">
-            På grund av hög export och låg produktion från förnybara källor, som
-            vanligtvis pressar ner priserna, är elpriserna idag högre än normalt
-            i SE4. Vindkraftsproduktionen är låg, samtidigt som exporten till
-            kontinenten är hög, vilket skapar ett underskott och driver upp
-            priset
-          </p>
+          <p className="info-text">{analysis[selectedCard]}</p>
         </div>
       )}
     </>
