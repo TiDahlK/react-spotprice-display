@@ -52,7 +52,9 @@ function transformData(data) {
       average: {
         price: `${(areaAverage / 10).toFixed(2)} öre/kWh`,
       },
-      timeSeries,
+      timeSeries: timeSeries.sort((a, b) => {
+        return a.time - b.time;
+      }),
     };
 
     return result;
