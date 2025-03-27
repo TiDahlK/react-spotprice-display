@@ -23,6 +23,28 @@ const COLOR_LIST = [
   "#99B3A6",
   "#5B7F6B",
 ];
+
+const LABEL_DICTIONARY = {
+  HydroWaterReservoir: "Vattenkraftmagasin",
+  Other: "Övrigt",
+  WindOnshore: "Vindkraft land",
+  Nuclear: "Kärnkraft",
+  FossilGas: "Fossilgas",
+  Biomass: "Biomassa",
+  FossilHardCoal: "Stenkol",
+  FossilOil: "Fossilolja",
+  HydroRunOfRiverAndPoundage: "Vattenkraft",
+  OtherRenewable: "Annan förnybar energi",
+  Solar: "Solkraft",
+  Waste: "Avfall",
+  WindOffshore: "Vindkraft havsbaserad",
+  FossilPeat: "Fossilt torv",
+  HydroPumpedStorage: "Vattenkraft (pumpkraft)",
+  FossilBrownCoal: "Brunkol",
+  Geothermal: "Geotermisk energi",
+  FossilCoalDerivedGas: "Kolbaserad gas",
+};
+
 function calculateProductionPercentage(data, colorMap) {
   const result = data.content.reduce(
     (productionByType, entry) => {
@@ -47,19 +69,19 @@ function calculateProductionPercentage(data, colorMap) {
   const updatedData = Object.entries(result.byType)
     .map(([label, value], index) => {
       return {
-        label,
+        label: LABEL_DICTIONARY[label] || label,
         value: (value / result.totalProduction) * 100,
         id: index,
         color: colorMap[label],
       };
     })
     .reduce((acc, item) => {
-      if (item.value > 1 && item.label !== "Other") {
+      if (item.value > 1 && item.label !== "Övrigt") {
         acc.push(item);
         return acc;
       }
 
-      const otherEntry = acc.find((entry) => entry.label === "Other");
+      const otherEntry = acc.find((entry) => entry.label === "Övrigt");
 
       if (otherEntry) {
         otherEntry.value += item.value;
@@ -67,7 +89,7 @@ function calculateProductionPercentage(data, colorMap) {
       }
 
       acc.push({
-        label: "Other",
+        label: "Övrigt",
         value: item.value,
         id: acc.length,
         color: COLOR_LIST[Object.entries(colorMap).length],
