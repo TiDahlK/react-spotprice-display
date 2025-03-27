@@ -2,19 +2,19 @@
   "crons": [
     {
       "path": "/api/cron-functions/updateSpotPrices",
-      "schedule": "0 0 * * *"
+      "schedule": "5 2 * * *"
     },
     {
       "path": "/api/cron-functions/updateEnergyMix",
-      "schedule": "0 0 * * *"
+      "schedule": "5 2 * * *"
     },
     {
       "path": "/api/cron-functions/updateExchange",
-      "schedule": "0 0 * * *"
+      "schedule": "5 2 * * *"
     },
     {
       "path": "/api/cron-functions/updateAiAnalysis",
-      "schedule": "15 0 * * *"
+      "schedule": "15 2 * * *"
     }
   ]
 }
