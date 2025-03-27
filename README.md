@@ -40,7 +40,7 @@ Any new updates pushed to the repository are automatically built and deployed.
 1. Clone the repository:
    ```sh
    git clone https://github.com/TiDahlK/react-spotprice-display.git
-   cd your-repo
+   cd react-spotprice-display
    ```
 2. Install dependencies:
    ```sh
