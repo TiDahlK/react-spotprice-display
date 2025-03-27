@@ -18,7 +18,7 @@ export const LegendItem = ({ color, label }) => {
           strokeWidth="1"
         />
       </svg>
-      <span>{label}</span>
+      <span role="tooltip">{label}</span>
     </div>
   );
 };
