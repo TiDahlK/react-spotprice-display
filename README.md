@@ -44,6 +44,7 @@ Any new updates pushed to the repository are automatically built and deployed.
    ```
 2. Install dependencies:
    ```sh
+   cd ui
    npm install
    ```
 3. Run the development server:
@@ -59,9 +60,7 @@ Any new updates pushed to the repository are automatically built and deployed.
 
 ### Cron Job Endpoints
 
-- **GET /api/cron-functions/updateSpotprices** - Fetches and updates Nordpool spot prices.
-- **GET /api/cron-functions/updateEnergyMix** - Fetches and updates the energy mix data.
-- **GET /api/cron-functions/updateExchange** - Fetches and updates import/export exchange data.
+- **GET /api/cron-functions/updateNordpoolData** - Fetches and updates import/export exchange data, the energy mix data and spot prices.
 - **GET /api/cron-functions/updateAiAnalysis** - Runs AI-based analysis using OpenAI and updates data.
 
 ### Data Retrieval Endpoints
