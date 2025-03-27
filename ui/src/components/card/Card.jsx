@@ -6,6 +6,7 @@ import "./Card.css";
 
 function Card({ priceArea, high, low, average, energyMix, onClickCallback }) {
   const title = `${priceArea} ${average.price}`;
+  const ay11Title = `Prisområde ${priceArea}, Dagens genomsnittspris ${average.price}`;
 
   function handleClick() {
     document.title = title;
@@ -15,16 +16,26 @@ function Card({ priceArea, high, low, average, energyMix, onClickCallback }) {
   return (
     <>
       <button className="card__container" onClick={handleClick}>
-        <h2>
-          <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" /> {title}
+        <h2 id="main-heading" aria-labelledby={`extra-info-${priceArea}`}>
+          <FontAwesomeIcon icon="fa-solid fa-bolt fa-align-center" />
+          {title}
         </h2>
+        <p id={`extra-info-${priceArea}`} hidden>
+          {ay11Title}
+        </p>
         <div className="card__section">
           <h3>
-            <FontAwesomeIcon icon="fa-solid fa-circle-arrow-up fa-align-center" />
+            <FontAwesomeIcon
+              icon="fa-solid fa-circle-arrow-up fa-align-center"
+              aria-hidden="true"
+            />
             Högst: {high.price} {high.timespan}
           </h3>
           <h3>
-            <FontAwesomeIcon icon="fa-solid fa-circle-arrow-down" />
+            <FontAwesomeIcon
+              icon="fa-solid fa-circle-arrow-down"
+              aria-hidden="true"
+            />
             Lägst: {low.price} {low.timespan}
           </h3>
           {energyMix && (

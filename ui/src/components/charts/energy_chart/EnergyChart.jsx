@@ -30,7 +30,7 @@ export default function EnergyChart({ energyMix }) {
         {energyMix.map((type) => (
           <LegendItem
             key={type.label}
-            label={type.label}
+            label={`${type.label} (${type.value.toFixed(2)}%)`}
             color={type.color}
           ></LegendItem>
         ))}

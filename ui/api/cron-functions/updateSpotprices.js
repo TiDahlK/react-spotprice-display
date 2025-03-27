@@ -22,12 +22,12 @@ function transformData(data) {
       // Track high/low price details
       if (price > highestPrice) {
         highestPrice = price;
-        highTime = `Klocka ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
+        highTime = `Klockan ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
       }
 
       if (price < lowestPrice) {
         lowestPrice = price;
-        lowTime = `Klocka ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
+        lowTime = `Klockan ${hour}:00-${(parseInt(hour) + 1) % 24}:00`;
       }
 
       return {
@@ -52,7 +52,9 @@ function transformData(data) {
       average: {
         price: `${(areaAverage / 10).toFixed(2)} öre/kWh`,
       },
-      timeSeries,
+      timeSeries: timeSeries.sort((a, b) => {
+        return a.time - b.time;
+      }),
     };
 
     return result;
