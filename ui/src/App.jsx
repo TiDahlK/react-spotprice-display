@@ -30,15 +30,15 @@ function App() {
     },
     [selectedCard]
   );
-
-  const additionalInfoSubTitle = `Vad påverkar spotpriserna i prisområde ${selectedCard} idag?`;
-  const additionalInfoTitle = `Dagens spotpris i prisområde ${selectedCard}`;
   useEffect(() => {
     getSpotPrices(setError);
     getEnergyMix();
     getExchangeData();
     getAnalysis();
   }, []);
+
+  const additionalInfoSubTitle = `Vad påverkar spotpriserna i prisområde ${selectedCard} idag?`;
+  const additionalInfoTitle = `Dagens spotpris i prisområde ${selectedCard}`;
 
   if (error) {
     return <h1>{error}</h1>;
