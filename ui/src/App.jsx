@@ -1,5 +1,5 @@
 import Card from "./components/card/Card";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SpotPriceChart from "./components/charts/spotprice_chart/SpotPriceChart";
 import {
   useSpotPrice,
@@ -18,13 +18,21 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [error, setError] = useState(null);
 
-  const selectedArea = useRef(null);
-
   const handleSelectCard = (card) => {
     setSelectedCard(card);
-    selectedArea.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const selectedArea = useCallback(
+    (node) => {
+      if (node) {
+        node.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    [selectedCard]
+  );
+
+  const additionalInfoSubTitle = `Vad påverkar spotpriserna i prisområde ${selectedCard} idag?`;
+  const additionalInfoTitle = `Dagens spotpris i prisområde ${selectedCard}`;
   useEffect(() => {
     getSpotPrices(setError);
     getEnergyMix();
@@ -61,14 +69,18 @@ function App() {
       </div>
       {selectedCard && (
         <div className="additional-info_container" ref={selectedArea}>
-          <h2>Dagens Spotpris i {selectedCard}</h2>
+          <h2>{additionalInfoTitle}</h2>
 
           <SpotPriceChart
             timeSeries={spotPrices[selectedCard].timeSeries}
           ></SpotPriceChart>
 
-          <h3>Vad påverkar spotpriserna i {selectedCard} idag?</h3>
-          <p className="info-text">{analysis[selectedCard]}</p>
+          {analysis && (
+            <>
+              <h3>{additionalInfoSubTitle}</h3>
+              <p className="info-text">{analysis[selectedCard]}</p>
+            </>
+          )}
         </div>
       )}
     </>
