@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron-functions/updateNordpoolData",
+      "schedule": "5 2 * * *"
+    },
+    {
+      "path": "/api/cron-functions/updateAiAnalysis",
+      "schedule": "15 2 * * *"
+    }
+  ]
+}
