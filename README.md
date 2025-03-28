@@ -47,11 +47,16 @@ Any new updates pushed to the repository are automatically built and deployed.
    cd ui
    npm install
    ```
-3. Run the development server:
+3. Create a `.env` file in the root directory and add the following secrets:
+   ```sh
+   OPENAI_API_KEY=your-openai-api-key
+   BLOB_READ_WRITE_TOKEN=your-blob-read-write-token
+   ```
+4. Run the development server:
    ```sh
    vercel dev
    ```
-4. Deploy to Vercel:
+5. Deploy to Vercel:
    ```sh
    vercel
    ```
@@ -60,7 +65,7 @@ Any new updates pushed to the repository are automatically built and deployed.
 
 ### Cron Job Endpoints
 
-- **GET /api/cron-functions/updateNordpoolData** - Fetches and updates import/export exchange data, the energy mix data and spot prices.
+- **GET /api/cron-functions/updateNordpoolData** - Fetches and updates import/export exchange data, the energy mix data, and spot prices.
 - **GET /api/cron-functions/updateAiAnalysis** - Runs AI-based analysis using OpenAI and updates data.
 
 ### Data Retrieval Endpoints
