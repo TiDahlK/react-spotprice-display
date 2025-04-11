@@ -16,7 +16,11 @@ function mapSpotPriceData(data) {
 
     const timeSeries = data.multiAreaEntries.map((entry) => {
       const price = entry.entryPerArea[area] || 0;
-      const deliveryStart = new Date(entry.deliveryStart);
+      const deliveryStart = new Date(
+        new Date(entry.deliveryStart).toLocaleString("sv-SE", {
+          timeZone: "Europe/Stockholm",
+        })
+      );
       const hour = deliveryStart.getHours();
 
       if (price > highestPrice) {
@@ -34,6 +38,7 @@ function mapSpotPriceData(data) {
         value: Math.round(price * 10) / 100,
       };
     });
+    console.log(timeSeries);
 
     const areaAverage = data.areaAverages.find(
       (a) => a.areaCode === area
@@ -270,8 +275,6 @@ export default async function handler(req, res) {
     const exchangeDataAggregated = aggregateExchangeData(exchangeData);
     const combinedData = {
       priceData: transformedPriceData,
-      productionData,
-      exchangeData: exchangeDataAggregated,
     };
 
     await Promise.all([
