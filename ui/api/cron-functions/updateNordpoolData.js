@@ -16,11 +16,10 @@ function mapSpotPriceData(data) {
 
     const timeSeries = data.multiAreaEntries.map((entry) => {
       const price = entry.entryPerArea[area] || 0;
-      const deliveryStart = new Date(entry.deliveryStart).toLocaleString(
-        "sv-SE",
-        {
+      const deliveryStart = new Date(
+        new Date(entry.deliveryStart).toLocaleString("sv-SE", {
           timeZone: "Europe/Stockholm",
-        }
+        })
       );
       const hour = deliveryStart.getHours();
 
