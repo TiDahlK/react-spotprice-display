@@ -63,17 +63,38 @@ const fetchSpotPricesForArea = async (area, code, parser, exchangeRate) => {
         const orePerKWh = (eurPerMWh * exchangeRate * 0.9901639344262295) / 10;
 
         return {
-          hour: parseInt(p.position),
-          eurPerMWh,
-          orePerKWh: toTwoDecimalsTruncated(orePerKWh),
+          time: p.position,
+          price: toTwoDecimalsTruncated(orePerKWh), // truncated to 2 decimals
         };
       }) || [];
 
+    const sorted = [...points].sort((a, b) => a.time - b.time);
+
+    const highest = sorted.reduce((a, b) => (a.price > b.price ? a : b));
+    const lowest = sorted.reduce((a, b) => (a.price < b.price ? a : b));
+    const avg = toTwoDecimalsTruncated(
+      sorted.reduce((sum, p) => sum + parseFloat(p.price), 0) / sorted.length
+    );
+
     return {
       [area]: {
-        currency: "SEK",
-        unit: "kWh",
-        prices: points,
+        priceArea: area,
+        high: {
+          price: `${highest.price} öre/kWh`,
+          timespan: `Klockan ${highest.time}:00-${
+            (parseInt(highest.time) + 1) % 24
+          }:00`,
+        },
+        low: {
+          price: `${lowest.price} öre/kWh`,
+          timespan: `Klockan ${lowest.time}:00-${
+            (parseInt(lowest.time) + 1) % 24
+          }:00`,
+        },
+        average: {
+          price: `${avg} öre/kWh`,
+        },
+        timeSeries: sorted,
       },
     };
   } catch (err) {
