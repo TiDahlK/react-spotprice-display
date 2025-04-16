@@ -27,7 +27,7 @@ const buildUrl = (code) => {
     )
   );
 
-  const yesterday2200 = new Date(today2200.getTime() - 24 * 60 * 60 * 1000);
+  const tomorrow2200 = new Date(today2200.getTime() + 24 * 60 * 60 * 1000);
 
   const formatDate = (date) => {
     return date
@@ -37,26 +37,22 @@ const buildUrl = (code) => {
       .slice(0, 12);
   };
 
-  const periodStart = formatDate(yesterday2200);
-  const periodEnd = formatDate(today2200);
+  const periodStart = formatDate(today2200);
+  const periodEnd = formatDate(tomorrow2200);
 
   return `${BASE_URL}?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&in_Domain=${code}&out_Domain=${code}&securityToken=${TOKEN}`;
 };
 
 const toTwoDecimalsTruncated = (num) => {
-  return (Math.floor(num * 100) / 100).toLocaleString("sv-SE", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  return Math.round(num * 100) / 100;
 };
 
+const getTimeLabel = (time) =>
+  `Klockan ${(parseInt(time) - 1) % 24}:00-${time}:00`;
+
 const fetchSpotPricesForArea = async (area, code, parser, exchangeRate) => {
-  const startTime = Date.now(); // Start timing
   try {
     const { data: xml } = await axios.get(buildUrl(code));
-    const durationMs = Date.now() - startTime; // Calculate duration
-
-    console.log(durationMs);
 
     const json = await parser.parseStringPromise(xml);
     const timeSeries = json?.Publication_MarketDocument?.TimeSeries;
@@ -64,41 +60,55 @@ const fetchSpotPricesForArea = async (area, code, parser, exchangeRate) => {
     const points =
       timeSeries?.Period?.Point?.map((p) => {
         const eurPerMWh = parseFloat(p["price.amount"]);
-        const orePerKWh = (eurPerMWh * exchangeRate * 0.9901639344262295) / 10;
+        const orePerKWh = (eurPerMWh * exchangeRate) / 10;
 
         return {
           time: p.position,
-          price: toTwoDecimalsTruncated(orePerKWh), // truncated to 2 decimals
+          value: orePerKWh, // truncated to 2 decimals
         };
       }) || [];
 
     const sorted = [...points].sort((a, b) => a.time - b.time);
 
-    const highest = sorted.reduce((a, b) => (a.price > b.price ? a : b));
-    const lowest = sorted.reduce((a, b) => (a.price < b.price ? a : b));
-    const avg = toTwoDecimalsTruncated(
-      sorted.reduce((sum, p) => sum + parseFloat(p.price), 0) / sorted.length
+    const { highest, lowest, sum } = sorted.reduce(
+      (acc, point) => {
+        acc.sum += parseFloat(point.value);
+
+        if (point.value > acc.highest.value) {
+          acc.highest = point;
+        }
+        if (point.value < acc.lowest.value) {
+          acc.lowest = point;
+        }
+
+        return acc;
+      },
+      {
+        sum: 0,
+        highest: sorted[0],
+        lowest: sorted[0],
+      }
     );
+    const avg = sum / sorted.length;
 
     return {
       [area]: {
         priceArea: area,
         high: {
-          price: `${highest.price} öre/kWh`,
-          timespan: `Klockan ${highest.time}:00-${
-            (parseInt(highest.time) + 1) % 24
-          }:00`,
+          price: `${toTwoDecimalsTruncated(highest.value)} öre/kWh`,
+          timespan: getTimeLabel(highest.time),
         },
         low: {
-          price: `${lowest.price} öre/kWh`,
-          timespan: `Klockan ${lowest.time}:00-${
-            (parseInt(lowest.time) + 1) % 24
-          }:00`,
+          price: `${toTwoDecimalsTruncated(lowest.value)} öre/kWh`,
+          timespan: getTimeLabel(lowest.time),
         },
         average: {
-          price: `${avg} öre/kWh`,
+          price: `${toTwoDecimalsTruncated(avg)} öre/kWh`,
         },
-        timeSeries: sorted,
+        timeSeries: sorted.map((point) => ({
+          value: toTwoDecimalsTruncated(point.value),
+          time: point.time,
+        })),
       },
     };
   } catch (err) {
@@ -146,9 +156,12 @@ export default async function handler(req, res) {
   const areaResults = await Promise.all(promises);
 
   const results = Object.assign({}, ...areaResults);
-  const TODAYS_DATE = new Date().toISOString().split("T")[0];
 
-  await setBlob(`open_spotprice_${TODAYS_DATE}`, JSON.stringify(results));
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  const TOMORROWS_DATE = tomorrow.toISOString().split("T")[0];
+
+  await setBlob(`open_spotprice_${TOMORROWS_DATE}`, JSON.stringify(results));
 
   res.setHeader("Content-Type", "application/json");
   res.status(200).json(results);

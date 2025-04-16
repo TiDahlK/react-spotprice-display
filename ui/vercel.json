@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron-functions/updateSpotPriceOpen.js",
-      "schedule": "5 2 * * *"
+      "schedule": "15 13 * * *"
     }
   ]
 }
