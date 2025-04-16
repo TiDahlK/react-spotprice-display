@@ -158,7 +158,7 @@ export default async function handler(req, res) {
   const results = Object.assign({}, ...areaResults);
 
   const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
+  tomorrow.setDate(new Date().getDate() + 1);
   const TOMORROWS_DATE = tomorrow.toISOString().split("T")[0];
 
   await setBlob(`open_spotprice_${TOMORROWS_DATE}`, JSON.stringify(results));
