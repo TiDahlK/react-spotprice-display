@@ -27,7 +27,7 @@ const buildUrl = (code) => {
     )
   );
 
-  const yesterday2200 = new Date(today2200.getTime() - 24 * 60 * 60 * 1000);
+  const tomorrow2200 = new Date(today2200.getTime() + 24 * 60 * 60 * 1000);
 
   const formatDate = (date) => {
     return date
@@ -37,8 +37,8 @@ const buildUrl = (code) => {
       .slice(0, 12);
   };
 
-  const periodStart = formatDate(yesterday2200);
-  const periodEnd = formatDate(today2200);
+  const periodStart = formatDate(today2200);
+  const periodEnd = formatDate(tomorrow2200);
 
   return `${BASE_URL}?documentType=A44&periodStart=${periodStart}&periodEnd=${periodEnd}&in_Domain=${code}&out_Domain=${code}&securityToken=${TOKEN}`;
 };
@@ -156,9 +156,12 @@ export default async function handler(req, res) {
   const areaResults = await Promise.all(promises);
 
   const results = Object.assign({}, ...areaResults);
-  const TODAYS_DATE = new Date().toISOString().split("T")[0];
 
-  await setBlob(`open_spotprice_${TODAYS_DATE}`, JSON.stringify(results));
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  const TOMORROWS_DATE = tomorrow.toISOString().split("T")[0];
+
+  await setBlob(`open_spotprice_${TOMORROWS_DATE}`, JSON.stringify(results));
 
   res.setHeader("Content-Type", "application/json");
   res.status(200).json(results);
