@@ -1,9 +1,8 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 import xml2js from "xml2js";
 import { setBlob } from "../../api-utils/blob.js";
-import dotenv from "dotenv";
 
-const env = dotenv.config().parsed;
 const AREAS = {
   SE1: "10Y1001A1001A44P",
   SE2: "10Y1001A1001A45N",
@@ -11,7 +10,7 @@ const AREAS = {
   SE4: "10Y1001A1001A47J",
 };
 
-const TOKEN = env.ENTSOE_TOKEN;
+const TOKEN = process.env.ENTSOE_TOKEN;
 const BASE_URL = "https://web-api.tp.entsoe.eu/api";
 
 const buildUrl = (code) => {
@@ -52,8 +51,13 @@ const toTwoDecimalsTruncated = (num) => {
 };
 
 const fetchSpotPricesForArea = async (area, code, parser, exchangeRate) => {
+  const startTime = Date.now(); // Start timing
   try {
     const { data: xml } = await axios.get(buildUrl(code));
+    const durationMs = Date.now() - startTime; // Calculate duration
+
+    console.log(durationMs);
+
     const json = await parser.parseStringPromise(xml);
     const timeSeries = json?.Publication_MarketDocument?.TimeSeries;
 
@@ -108,7 +112,7 @@ const fetchSpotPricesForArea = async (area, code, parser, exchangeRate) => {
 };
 
 const getFxRateEURtoSEK = async () => {
-  const { FXR_TOKEN } = env;
+  const { FXR_TOKEN } = process.env;
   const url = `https://api.fxratesapi.com/latest?currencies=SEK&base=EUR&amount=1`;
 
   try {
