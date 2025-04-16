@@ -1,4 +1,8 @@
 {
   "crons": [
+    {
+      "path": "/api/cron-functions/updateSpotPriceOpen.js",
+      "schedule": "5 2 * * *"
+    }
   ]
 }
