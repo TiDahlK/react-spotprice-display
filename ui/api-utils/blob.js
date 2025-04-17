@@ -1,5 +1,6 @@
-import { put } from "@vercel/blob";
+import { put, del } from "@vercel/blob";
 import axios from "axios";
+
 export async function fetchBlob(name) {
   const { data } = await axios.get(
     `https://vmiofuhfoulvg3ax.public.blob.vercel-storage.com/${name}?download=1`
@@ -14,4 +15,10 @@ export async function setBlob(name, content) {
     allowOverwrite: true,
   });
   return url;
+}
+
+export async function deleteBlob(name) {
+  return await del(
+    `https://vmiofuhfoulvg3ax.public.blob.vercel-storage.com/${name}?download=1`
+  );
 }
