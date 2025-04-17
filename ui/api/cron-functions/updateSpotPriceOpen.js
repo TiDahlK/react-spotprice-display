@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 import axios from "axios";
 import xml2js from "xml2js";
-import { setBlob } from "../../api-utils/blob.js";
+import { setBlob, deleteBlob } from "../../api-utils/blob.js";
+
+const blobName = (date) => `open_spotprice_${date}`;
 
 const AREAS = {
   SE1: "10Y1001A1001A44P",
@@ -139,7 +141,17 @@ const getFxRateEURtoSEK = async () => {
   }
 };
 
+export async function deleteYesterdaysBlob() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const dateStr = yesterday.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+
+  await deleteBlob(blobName(dateStr));
+}
+
 export default async function handler(req, res) {
+  deleteYesterdaysBlob(); // no need to wait for response
+
   const parser = new xml2js.Parser({ explicitArray: false });
 
   const exchangeRate = await getFxRateEURtoSEK();
@@ -161,7 +173,7 @@ export default async function handler(req, res) {
   tomorrow.setDate(new Date().getDate() + 1);
   const TOMORROWS_DATE = tomorrow.toISOString().split("T")[0];
 
-  await setBlob(`open_spotprice_${TOMORROWS_DATE}`, JSON.stringify(results));
+  await setBlob(blobName(TOMORROWS_DATE), JSON.stringify(results));
 
   res.setHeader("Content-Type", "application/json");
   res.status(200).json(results);
