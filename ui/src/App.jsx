@@ -6,14 +6,15 @@ import {
   useEnergyMix,
   useExchangeData,
   useAnalysis,
+  useContent,
 } from "./utils/index";
 import "./App.css";
 
 function App() {
   const [spotPrices, getSpotPrices] = useSpotPrice();
   const [energyMix, getEnergyMix] = useEnergyMix();
-  const [exchangeData, getExchangeData] = useExchangeData();
   const [analysis, getAnalysis] = useAnalysis();
+  const [content, getContent] = useContent();
 
   const [selectedCard, setSelectedCard] = useState(null);
   const [error, setError] = useState(null);
@@ -33,8 +34,8 @@ function App() {
   useEffect(() => {
     getSpotPrices(setError);
     getEnergyMix();
-    getExchangeData();
     getAnalysis();
+    getContent();
   }, []);
 
   const additionalInfoSubTitle = `Vad påverkar spotpriserna i prisområde ${selectedCard} idag?`;
@@ -45,12 +46,16 @@ function App() {
   }
 
   if (!spotPrices) {
-    return <h1 className="neon-text">Laddar in dagens spotpriser...</h1>;
+    return (
+      <h1 className="neon-text">
+        {content?.loadingText || "Laddar in dagens spotpriser..."}
+      </h1>
+    );
   }
 
   return (
     <>
-      <h1 className="neon-text">Dagens spotpriser</h1>
+      <h1 className="neon-text">{content?.title}</h1>
       <div className="container">
         {Object.entries(spotPrices).map(([area, spotPriceInfo]) => {
           const props = {
@@ -75,7 +80,7 @@ function App() {
             timeSeries={spotPrices[selectedCard].timeSeries}
           ></SpotPriceChart>
 
-          {analysis && (
+          {analysis && content?.showAiAnalysis && (
             <>
               <h3>{additionalInfoSubTitle}</h3>
               <p className="info-text">{analysis[selectedCard]}</p>

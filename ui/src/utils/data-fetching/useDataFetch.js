@@ -16,7 +16,7 @@ export const useDataFetch = (sessionStorageKey, endpoint, onFailure) => {
       const { data } = await axios.get(`/api/${endpoint}`);
       window.sessionStorage.setItem(sessionStorageKey, JSON.stringify(data));
       setApiData(data);
-    } catch(error) {
+    } catch (error) {
       onFailure(error);
     }
   };
